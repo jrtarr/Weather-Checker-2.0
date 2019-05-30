@@ -4,6 +4,7 @@ const hbs = require('hbs')
 const request = require('request')
 const geocode = require('./utils/geocode')
 const weather = require('./utils/weather')
+const config = require('./utils/config')
 
 //Initialize Express
 const app = express()
@@ -21,10 +22,37 @@ hbs.registerPartials(partialsDir)
 
 //Setup static dir to serve
 app.use(express.static(publicDir))
+app.set('trust proxy',true)
 
 app.get('',(req,res)=>{
-    res.render('index',{
-        title: 'Weather'
+    // const ipKey = config.keys.ipInfo
+    const ipKey = process.env.IPKEY
+    const url = `https://ipinfo.io/json?token=${ipKey}`
+    request({url,json:true},(error,response,body)=>{ //Load initial location from client's IP address
+        if (error || response.body.error === 0){ //If an error is returned or the request failed at any point, render the page without a forecast
+            return res.render('index',{
+                title: 'Weather'
+            })
+        }
+        geocode.geocode(body.city,(error, {lat, long, location} = {})=>{
+            if(error){
+                return res.render({
+                    title: 'Weather'
+                })
+            }
+            else{
+                weather.forecast(lat, long, (error, { summary, temp, precipProb:precip } = {})=>{
+                    if(error){
+                        return res.send(error)
+                    }else{
+                        return res.render('index',{
+                            title: `Weather`,
+                            defaultForecast: `In ${location} it's currently ${temp}ºF. Today the weather should be ${summary} with a ${precip}% chance of precipitation.`
+                        })
+                    }
+                })
+            }
+        })
     })
 })
 

@@ -1,8 +1,9 @@
 const request = require('request')
+const config = require('./config')
 
-//Load API keys from Heroku environment
+//Load API key from Heroku environment
 const mapBoxKey = process.env.MBKEY
-//const ipInfoKey = process.env.IPKEY
+// const mapBoxKey = config.keys.mapBox
 
 function geocode(address,callback,ipInfo){
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapBoxKey}`
