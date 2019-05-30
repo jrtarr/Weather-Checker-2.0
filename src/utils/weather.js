@@ -1,6 +1,6 @@
 const request = require('request')
 
-const darkSkyKey = '***REMOVED***'
+const darkSkyKey = process.env.DSKEY
 
 function forecast(lat, long, callback){
     const url = `https://api.darksky.net/forecast/${darkSkyKey}/${lat},${long}`
