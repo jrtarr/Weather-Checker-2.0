@@ -1,6 +1,6 @@
 const request = require('request')
 
-const darkSkyKey = process.env.DSKEY
+const darkSkyKey = process.env.DSKEY //Load API key from Heroku environment
 
 function forecast(lat, long, callback){
     const url = `https://api.darksky.net/forecast/${darkSkyKey}/${lat},${long}`
