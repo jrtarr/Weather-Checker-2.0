@@ -1,5 +1,5 @@
 const request = require('request')
-const config = require('./config')
+//const config = require('./config')
 
 //Load API key from Heroku environment
 const mapBoxKey = process.env.MBKEY

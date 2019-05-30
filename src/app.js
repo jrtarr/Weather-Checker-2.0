@@ -4,7 +4,7 @@ const hbs = require('hbs')
 const request = require('request')
 const geocode = require('./utils/geocode')
 const weather = require('./utils/weather')
-const config = require('./utils/config')
+//const config = require('./utils/config')
 
 //Initialize Express
 const app = express()
