@@ -56,20 +56,6 @@ app.get('',(req,res)=>{
     })
 })
 
-app.get('/about',(req,res)=>{
-    res.render('about',{
-        title: 'About',
-        body: 'Here\'s some about text'
-    })
-})
-
-app.get('/help',(req,res)=>{
-    res.render('help',{
-        title: 'Help',
-        message: 'Hi do you need help?'
-    })
-})
-
 app.get('/weather',(req,res)=>{
     if (!req.query.loc){
         return res.render('weather',{
