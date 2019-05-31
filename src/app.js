@@ -35,7 +35,6 @@ app.get('',(req,res)=>{
         ip = req.ip
     }
     const url = `https://ipinfo.io/${ip}?token=${ipKey}`
-    console.log(url)
     request({url,json:true},(error,response,body)=>{ //Load initial location from client's IP address
         if (error || response.body.error === 0){ //If an error is returned or the request failed at any point, render the page without a forecast
             return res.render('index',{
@@ -95,7 +94,11 @@ app.get('/weather',(req,res)=>{
         }
     })
 })
-
+app.get('/help', (req, res)=>{
+    res.render('help',{
+        title: 'Help'
+    })
+})
 app.get('/help/*', (req, res)=>{
     res.render('404',{
         title: 'Help',
