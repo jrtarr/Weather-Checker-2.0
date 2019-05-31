@@ -4,7 +4,7 @@ const hbs = require('hbs')
 const request = require('request')
 const geocode = require('./utils/geocode')
 const weather = require('./utils/weather')
-//const config = require('./utils/config')
+const config = require('./utils/config')
 
 //Initialize Express
 const app = express()
@@ -25,9 +25,17 @@ app.use(express.static(publicDir))
 app.set('trust proxy',true)
 
 app.get('',(req,res)=>{
-    // const ipKey = config.keys.ipInfo
-    const ipKey = process.env.IPKEY
-    const url = `https://ipinfo.io/json?token=${ipKey}`
+    const ipKey = config.keys.ipInfo
+    // const ipKey = process.env.IPKEY
+    let ip = req.headers['x-forwarded-for']
+    if(ip){
+        const list = ip.split(',')
+        ip = list[list.length-1]
+    }else{
+        ip = req.ip
+    }
+    const url = `https://ipinfo.io/${ip}?token=${ipKey}`
+    console.log(url)
     request({url,json:true},(error,response,body)=>{ //Load initial location from client's IP address
         if (error || response.body.error === 0){ //If an error is returned or the request failed at any point, render the page without a forecast
             return res.render('index',{
