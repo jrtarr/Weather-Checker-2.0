@@ -4,7 +4,7 @@ const hbs = require('hbs')
 const request = require('request')
 const geocode = require('./utils/geocode')
 const weather = require('./utils/weather')
-const config = require('./utils/config')
+// const config = require('./utils/config')
 
 //Initialize Express
 const app = express()
@@ -25,8 +25,8 @@ app.use(express.static(publicDir))
 app.set('trust proxy',true)
 
 app.get('',(req,res)=>{
-    const ipKey = config.keys.ipInfo
-    // const ipKey = process.env.IPKEY
+    // const ipKey = config.keys.ipInfo
+    const ipKey = process.env.IPKEY
     let ip = req.headers['x-forwarded-for']
     if(ip){
         const list = ip.split(',')
